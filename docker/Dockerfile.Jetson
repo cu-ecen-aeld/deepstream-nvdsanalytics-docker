@@ -1,6 +1,6 @@
 # Deepstream builds require source code to be placed in the sample_apps folder.
 # Define an argument for this so we can reference it without copy and paste
-ARG container_build_path=/opt/nvidia/deepstream/deepstream-6.0/sources/apps/sample_apps/deepstream-nvdsanalytics-docker 
+ARG container_build_path=/opt/nvidia/deepstream/deepstream/sources/apps/sample_apps/deepstream-nvdsanalytics-docker 
 
 # Use the samples container for deepstream-l4t as our base container.
 # It would be possible to use a multi-stage build which would use a container
@@ -8,17 +8,17 @@ ARG container_build_path=/opt/nvidia/deepstream/deepstream-6.0/sources/apps/samp
 # deepstream container for deployment which only had runtime dependencies.
 # However, to keep things simple, we'll just use the samples containerfor 
 # both build and deployment
-FROM nvcr.io/nvidia/deepstream-l4t:6.0.1-samples
+FROM nvcr.io/nvidia/deepstream-l4t:6.3-samples
 ARG container_build_path
 
 # These are both runtime and build time dependencies
 # unzip is needed to unzip the model at runtime, all others
 # are only needed in the build container
 RUN apt-get update && apt-get install -y build-essential \
-        libgstreamer1.0-dev \
-        libgstrtspserver-1.0-dev \
-        libjson-glib-dev \
-        wget \
+		libgstreamer1.0-dev \
+		libgstrtspserver-1.0-dev \
+		libjson-glib-dev \
+		wget \
         unzip
 
 # This line says to copy everything in the `src` directory 
@@ -33,7 +33,7 @@ WORKDIR $container_build_path
 # This line actually builds the code in the src directory
 # from the deepstream samples subdirectory, using the additional
 # deepstream source files contained in the build container.
-RUN export CUDA_VER=10.2 && make -f Makefile.ds
+RUN export CUDA_VER=11.4 && make -f Makefile.ds
 
 # Symlink a `/usr/src/app` directory to the location where
 # we built the container, so we have an easier way to reference
