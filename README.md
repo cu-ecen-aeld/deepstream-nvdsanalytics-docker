@@ -88,3 +88,9 @@ the container.  This will be mapped to `/data` inside the container.  You can
 use this to add files to the container, modify the deepstream configuration,
 or update the model, then re-run as desired.
 
+# Upgrading to a new Deepstream release.
+
+* The `./docker/get-sample-source.sh` script may be used to obtain sample source
+from the samples container.
+* Modify references in the Dockerfiles to reference the appropriate deepstream version
+and CUDA_VER.
